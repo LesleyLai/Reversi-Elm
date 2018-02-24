@@ -14,8 +14,6 @@ init : ( Model, Cmd Msg )
 init =
     ( {}, Cmd.none )
 
-
-
 ---- UPDATE ----
 
 type Msg
@@ -25,8 +23,6 @@ type Msg
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     ( model, Cmd.none )
-
-
 
 ---- VIEW ----
 
