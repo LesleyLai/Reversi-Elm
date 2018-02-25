@@ -8,6 +8,10 @@ import Html.Styled exposing (..)
 import Html.Styled.Attributes exposing (css)
 import Css exposing (..)
 import Css.Colors exposing (white, black)
+import List exposing (range)
+
+blockWidth : Float
+blockWidth = 50
 
 pieceView : PieceSpace -> Html msg
 pieceView piece =
@@ -28,16 +32,21 @@ pieceView piece =
     in
     div
     [css [ border3 (px 1) solid black
-         , width (px 50)
-         , height (px 50)]]
+         , width (px blockWidth)
+         , height (px blockWidth)]]
     [ circle ]
 
+rowView : Board -> Int -> Html Msg
+rowView board y =
+    div [css [displayFlex,
+              width (px ((blockWidth + 2) * 8)),
+              margin auto]]
+        (List.map (\x -> pieceView (get board x y)) (range 0 7))
 
 boardView : Board -> Html Msg
 boardView board =
     div [css [margin auto]]
-        [ pieceView (get board 3 4)
-        ]
+        (List.map (\y -> (rowView board y)) (range 0 7))
        
 
 view : Board -> Html.Html Msg
