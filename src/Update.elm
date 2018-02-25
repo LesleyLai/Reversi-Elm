@@ -1,10 +1,14 @@
-module Update exposing (Msg, update)
+module Update exposing (Msg(..), update)
 
 import Models.Board exposing (Board, initialBoard)
 
 type Msg
-    = NoOp
+    = Click (Int, Int)
 
 update : Msg -> Board -> ( Board, Cmd Msg )
 update msg model =
-    ( model, Cmd.none )
+    case msg of
+        Click (x, y) ->
+            Debug.log (toString (x, y))
+            ( model, Cmd.none )
+
