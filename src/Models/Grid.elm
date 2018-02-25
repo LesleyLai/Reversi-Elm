@@ -1,4 +1,4 @@
-module Models.Grid exposing (Grid, repeat, get)
+module Models.Grid exposing (Grid, repeat, get, set)
 
 import Array exposing (Array, repeat, get, set)
 import Maybe exposing (andThen, map)
