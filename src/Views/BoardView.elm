@@ -1,6 +1,7 @@
 module Views.BoardView exposing (view)
 
 import Models.Board exposing (Board, initialBoard, PieceSpace(..), get)
+import Model exposing (Model)
 import Update exposing (update, Msg(..))
 
 import Html
@@ -49,8 +50,9 @@ boardView board =
         (List.map (\y -> (rowView board y)) (range 0 7))
        
 
-view : Board -> Html.Html Msg
-view board =
+view : Model -> Html.Html Msg
+view model =
+    let {board, pieceCount, current} = model in
     div []
         [
           h1 [] [ text "Reversi" ],

@@ -23,4 +23,3 @@ get board x y =
      case Models.Grid.get board x y of
          Just piece -> piece
          Nothing -> Debug.crash "Out of index"
-         

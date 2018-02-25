@@ -1,18 +1,15 @@
 module Main exposing (..)
 
 import Html exposing (Html)
-import Models.Board exposing (Board, initialBoard)
+import Model exposing (Model, initModel)
 import Update exposing (update, Msg)
 import Views.BoardView exposing (view)
 
 ---- MODEL ----
 
-type alias Model =
-    Board
-
 init : ( Model, Cmd Msg )
 init =
-    ( initialBoard, Cmd.none )
+    ( initModel, Cmd.none )
 
 ---- PROGRAM ----
 
