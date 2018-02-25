@@ -3,7 +3,7 @@ module Main exposing (..)
 import Html exposing (Html)
 import Model exposing (Model, initModel)
 import Update exposing (update, Msg)
-import Views.BoardView exposing (view)
+import View exposing (view)
 
 ---- MODEL ----
 
