@@ -1,9 +1,9 @@
 module Views.BoardView exposing (boardView)
 
-import Models.Board exposing (Board, initialBoard, PieceSpace(..), get)
+import Models.Board exposing (Board, initialBoard, PieceSpace(..),
+                                  get, boardSpec)
 import Update exposing (update, Msg(..))
 
-import Html
 import Html.Styled exposing (..)
 import Html.Styled.Attributes exposing (css)
 import Css exposing (..)
@@ -38,13 +38,15 @@ pieceView piece x y =
 
 rowView : Board -> Int -> Html Msg
 rowView board y =
+    let (w, h) = boardSpec in
     div [css [displayFlex,
-              width (px ((blockWidth + 2) * 8)),
+              width (px ((blockWidth + 2) * (toFloat w))),
               margin auto]]
-        (List.map (\x -> pieceView (get board x y) x y) (range 0 7))
+        (List.map (\x -> pieceView (get board x y) x y) (range 0 (w-1)))
 
 boardView : Board -> Html Msg
 boardView board =
+    let (w, h) = boardSpec in
     div [css [margin auto]]
-        (List.map (\y -> (rowView board y)) (range 0 7))
+        (List.map (\y -> (rowView board y)) (range 0 (h-1)))
       

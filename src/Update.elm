@@ -10,18 +10,25 @@ type Msg
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
+    let {board, pieces, whiteCount, blackCount, current} = model in
     case msg of
         Click (x, y) ->
-            let {board, pieceCount, current} = model in
-            let nexeBoard = (set board x y current) in
-            let newModel = {board = nexeBoard,
-                             pieceCount = (pieceCount+1),
-                               current = (nextPiece current)} in
+            let
+                nextBoard = (set board x y current)
+                (next, newWhite, newBlack) =
+                    (nextPiece current whiteCount blackCount)
+                newPieces = (x,y)::pieces
+            in
+            let newModel = {board = nextBoard,
+                            pieces = newPieces,
+                            whiteCount = newWhite,
+                             blackCount = newBlack,
+                               current = next} in
             (newModel, Cmd.none)
 
-nextPiece : PieceSpace -> PieceSpace
-nextPiece piece =
+nextPiece : PieceSpace -> Int -> Int -> (PieceSpace, Int, Int)
+nextPiece piece whiteCount blackCount =
     case piece of
-        BlackPiece -> WhitePiece
-        WhitePiece -> BlackPiece
+        BlackPiece -> (WhitePiece, whiteCount, blackCount+1)
+        WhitePiece -> (BlackPiece, whiteCount+1, blackCount)
         NoPiece -> Debug.crash "You are violating the law of the universe"

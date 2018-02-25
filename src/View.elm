@@ -10,11 +10,13 @@ import Html.Styled exposing (..)
 
 view : Model -> Html.Html Msg
 view model =
-    let {board, pieceCount, current} = model in
+    let {board, pieces, whiteCount, blackCount, current} = model in
     div []
         [
           h1 [] [ text "Reversi" ],
-             boardView board
+             boardView board,
+             p [] [ text ("White: " ++ (toString whiteCount))],
+             p [] [ text ("Black: " ++ (toString blackCount))]
         ]
         |> toUnstyled
 
