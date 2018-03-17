@@ -40,6 +40,6 @@ sandwichesTest =
         [test "List of sandwiches in the initial model" <|
             \_->
                 Expect.equal
-             (listOfSandwiches initModel (3,4))
-             [[(4,4)]]
+             (listOfSandwiches initModel (3,2))
+             [[(3,3)]]
         ]

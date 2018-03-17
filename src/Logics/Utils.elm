@@ -66,7 +66,7 @@ sandwichHelper model point direction firstColor =
                 NoPiece -> Nothing
                 color ->
                     if (not (pieceEqual color firstColor)) then
-                        Just []
+                        Just [point]
                     else
                         case (sandwichHelper model (x,y) direction firstColor) of
                             Just pieces -> Just ((x,y)::pieces)
@@ -78,7 +78,6 @@ sandwich model initPoint direction =
     let firstPiece = nextPiece initPoint direction in
     case firstPiece of
         Nothing ->
-            Debug.log ("Empty" ++ (toString initPoint))
             Nothing
         Just (x, y) ->
             let firstColor = get board x y in
