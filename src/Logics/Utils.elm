@@ -4,10 +4,11 @@ module Logics.Utils exposing (neighbors, inBoard,
 
 import Model exposing (Model)
 import Models.Board exposing (boardSpec, get, PieceSpace(..), pieceEqual)
+import Dict exposing (Dict)
 
 import Set
 
-{- 
+{-
 Gets the neighbors of a coordinate on a board,
 ignore places out of index
 -}
@@ -98,13 +99,13 @@ listOfSandwiches model point =
     let directions = [(-1, -1), (-1, 0), (-1, 1), (0, -1),
                       (0, 1), (1, -1), (1, 0), (1, 1)] in
     List.filterMap (sandwich model point) directions
-
-allValidMoves : Model -> List(Int, Int)
+        
+allValidMoves : Model -> Dict (Int, Int) (List Sandwich)
 allValidMoves model =
     let allMoves = allPotentialMoves model in
     let verifyMove point =
         case listOfSandwiches model point of
             [] -> Nothing
-            _ -> Just point
+            ss -> Just (point, ss)
     in 
-    List.filterMap verifyMove allMoves            
+    List.filterMap verifyMove allMoves |> Dict.fromList
