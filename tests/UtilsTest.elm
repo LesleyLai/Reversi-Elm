@@ -43,3 +43,13 @@ sandwichesTest =
              (listOfSandwiches initModel (3,2))
              [[(3,3)]]
         ]
+
+validMovesTest : Test
+validMovesTest =
+    describe "get all valid moves"
+        [test "valid moves of initial condition" <|
+            \_->
+                Expect.equal
+             (Set.fromList (allValidMoves initModel))
+             (Set.fromList [(3,2), (2,3), (4,5), (5,4)])
+        ]

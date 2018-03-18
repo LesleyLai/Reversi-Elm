@@ -1,4 +1,6 @@
-module Logics.Utils exposing (..)
+module Logics.Utils exposing (neighbors, inBoard,
+                                  allPotentialMoves, listOfSandwiches,
+                                  allValidMoves)
 
 import Model exposing (Model)
 import Models.Board exposing (boardSpec, get, PieceSpace(..), pieceEqual)
@@ -26,6 +28,7 @@ inBoard (x, y) =
     else
         True
 
+{- Get all potential moves without consider it is valid or not -}
 allPotentialMoves : Model -> List (Int, Int)
 allPotentialMoves model =
     let
@@ -95,3 +98,13 @@ listOfSandwiches model point =
     let directions = [(-1, -1), (-1, 0), (-1, 1), (0, -1),
                       (0, 1), (1, -1), (1, 0), (1, 1)] in
     List.filterMap (sandwich model point) directions
+
+allValidMoves : Model -> List(Int, Int)
+allValidMoves model =
+    let allMoves = allPotentialMoves model in
+    let verifyMove point =
+        case listOfSandwiches model point of
+            [] -> Nothing
+            _ -> Just point
+    in 
+    List.filterMap verifyMove allMoves            
