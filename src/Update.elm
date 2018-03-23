@@ -18,15 +18,16 @@ update msg model =
         Click (x, y) ->
             let
                 moves = allValidMoves model
-                (next, newWhite, newBlack) =
-                    (nextPiece current whiteCount blackCount)
-                newPieces = (x,y)::pieces
             in
                 case Dict.get (x, y) moves of
                     Nothing -> (model, Cmd.none)
                     Just toFlip ->
                         let newModel
-                                = flip model (List.concat toFlip) in
+                                = flip model (List.concat toFlip)
+                            (next, newWhite, newBlack)
+                                = (nextPiece current newModel.whiteCount newModel.blackCount )
+                            newPieces = (x,y)::pieces
+                        in
                         ({board = (set newModel.board x y current),
                          pieces = newPieces,
                          whiteCount = newWhite,
@@ -37,13 +38,24 @@ update msg model =
 {- Flip the pieces in the list -}
 flip : Model -> List (Int, Int) -> Model
 flip model toFlip =
+    Debug.log (toString toFlip)
     List.foldl (\(x,y) modelBefore ->
                 let {board, pieces, whiteCount, blackCount, current} = modelBefore in
-                {board = (set board x y current),
-                 pieces = pieces,
-                 whiteCount = whiteCount,
-                 blackCount = blackCount,
-                 current = current}
+                let (whiteChange, blackChange) =
+                    case current of
+                        BlackPiece -> (-1, 1)
+                        WhitePiece -> (1, -1)
+                        NoPiece -> Debug.crash "Current piece must be black or white"
+                in
+                let
+                    newWhiteCount = whiteCount + whiteChange
+                    newBlackCount = blackCount + blackChange
+                in
+                (Model (set board x y current)
+                     pieces
+                     newWhiteCount
+                     newBlackCount
+                     current)
                ) model toFlip
         
         

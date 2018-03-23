@@ -73,7 +73,7 @@ sandwichHelper model point direction firstColor =
                         Just [point]
                     else
                         case (sandwichHelper model (x,y) direction firstColor) of
-                            Just pieces -> Just (point::(x,y)::pieces)
+                            Just pieces -> Just (point::pieces)
                             Nothing -> Nothing
             
 sandwich : Model -> (Int, Int) -> Direction -> Maybe Sandwich
