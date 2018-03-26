@@ -1,13 +1,12 @@
-module Models.Board exposing (PieceSpace(..),
-                                  Board,
-                                  initialBoard,
-                                  get,
-                                  boardSpec,
-                                  pieceEqual)
+module Models.Board exposing (Board,
+                              initialBoard,
+                              get,
+                              boardSpec,
+                              pieceEqual)
 
 import Models.Grid exposing (Grid, repeat, set)
+import Models.PieceSpace exposing (PieceSpace(..))
 
-type PieceSpace = NoPiece | WhitePiece | BlackPiece
 
 type alias Board = Grid PieceSpace
 

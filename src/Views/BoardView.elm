@@ -1,7 +1,8 @@
 module Views.BoardView exposing (boardView)
 
-import Models.Board exposing (Board, initialBoard, PieceSpace(..),
+import Models.Board exposing (Board, initialBoard,
                                   get, boardSpec)
+import Models.PieceSpace exposing (PieceSpace(..))
 import Update exposing (update, Msg(..))
 
 import Html.Styled exposing (..)

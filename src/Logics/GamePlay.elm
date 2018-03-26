@@ -1,9 +1,11 @@
 module Logics.GamePlay exposing (neighbors, inBoard,
                                   allPotentialMoves, listOfSandwiches,
-                                  allValidMoves, nextState)
+                                  allValidMoves, nextState,
+                                  gameFinished, winner)
 
 import Models.Grid exposing (set)
-import Models.Board exposing (boardSpec, get, PieceSpace(..), pieceEqual)
+import Models.Board exposing (boardSpec, get, pieceEqual)
+import Models.PieceSpace exposing (PieceSpace(..))
 import Models.GameState exposing (..)
 
 import Dict exposing (Dict)
@@ -156,3 +158,16 @@ flip state toFlip =
                      newBlackCount
                      current)
                ) state toFlip
+
+gameFinished : GameState -> Bool
+gameFinished state =
+    state.whiteCount + state.blackCount == 64
+
+winner : GameState -> PieceSpace
+winner state =
+    if (state.whiteCount > state.blackCount) then
+        WhitePiece
+    else if (state.whiteCount < state.blackCount) then
+        BlackPiece
+    else
+        NoPiece

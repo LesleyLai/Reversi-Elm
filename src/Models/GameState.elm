@@ -1,6 +1,7 @@
 module Models.GameState exposing (GameState, initGameState, Point, Sandwich)
 
-import Models.Board exposing (Board, initialBoard, PieceSpace(..))
+import Models.Board exposing (Board, initialBoard)
+import Models.PieceSpace exposing (PieceSpace(..))
 
 type alias GameState = { board : Board, pieces: List (Int, Int),
                          whiteCount: Int, blackCount: Int,
