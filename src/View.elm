@@ -33,6 +33,16 @@ mesh =
 view : Model -> Html.Html Msg
 view model =
     let t = model.currentTime
+        size = model.size
+    in
+    let
+        perspective =
+                Mat4.makePerspective 45 (toFloat size.width / toFloat size.height) 0.01 100
+        camera =
+            Mat4.makeLookAt
+                model.camera.position
+                (vec3 0 0 0)
+                model.camera.up
     in
     WebGL.toHtml
         [ width model.size.width
@@ -43,7 +53,7 @@ view model =
           vertexShader
           fragmentShader
           mesh
-          { perspective = perspective (t / 5000) }
+          { perspective = perspective, camera = camera }
         ]
     
     ---------------------------------------------------------------------------
@@ -74,16 +84,16 @@ view model =
     --     |> toUnstyled                                                     --
     ---------------------------------------------------------------------------
 
-perspective : Float -> Mat4
-perspective t =
+perspective : Mat4
+perspective =
     Mat4.mul
-        (Mat4.makePerspective 45 1 0.01 100)
-        (Mat4.makeLookAt (vec3 (4 * cos t) 0 (4 * sin t)) (vec3 0 0 0) (vec3 0 1 0))
+    (Mat4.makePerspective 45 1 0.01 100)
+    (Mat4.makeLookAt (vec3 4 4 0) (vec3 0 0 0) (vec3 0 1 0))
 
 
 -- Shaders --
 type alias Uniforms =
-    { perspective : Mat4 }
+    { perspective : Mat4, camera: Mat4 }
 
 
 vertexShader : Shader Vertex Uniforms { vcolor : Vec3 }
@@ -92,10 +102,11 @@ vertexShader =
         attribute vec3 position;
         attribute vec3 color;
         uniform mat4 perspective;
+        uniform mat4 camera;
         varying vec3 vcolor;
 
         void main () {
-            gl_Position = perspective * vec4(position, 1.0);
+            gl_Position = perspective * camera * vec4(position, 1.0);
             vcolor = color;
         }
 
