@@ -1,14 +1,14 @@
-module UtilsTest exposing (..)
+module GamePlayTest exposing (..)
 
 import Update exposing (Msg(..), update)
-import Model exposing (initModel)
+import Models.GameState exposing (initGameState)
 import Set
 import Dict
 
 import Test exposing (..)
 import Expect
 
-import Logics.Utils exposing (..)
+import Logics.GamePlay exposing (..)
 
 neighborsTest : Test
 neighborsTest =
@@ -32,7 +32,7 @@ allPotentialMovesTest =
         [test "possible moves of initial condition" <|
             \_->
                 Expect.equal
-             (List.length (allPotentialMoves initModel)) 12
+             (List.length (allPotentialMoves initGameState)) 12
         ]
 
 sandwichesTest : Test
@@ -41,7 +41,7 @@ sandwichesTest =
         [test "List of sandwiches in the initial model" <|
             \_->
                 Expect.equal
-             (listOfSandwiches initModel (3,2))
+             (listOfSandwiches initGameState (3,2))
              [[(3,3)]]
         ]
 
@@ -53,6 +53,6 @@ validMovesTest =
                 Expect.equal
              (Set.fromList <|
                   Dict.keys <|
-                  (allValidMoves initModel))
+                  (allValidMoves initGameState))
              (Set.fromList [(3,2), (2,3), (4,5), (5,4)])
         ]

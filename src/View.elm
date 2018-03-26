@@ -10,7 +10,7 @@ import Html.Styled exposing (..)
 
 view : Model -> Html.Html Msg
 view model =
-    let {board, pieces, whiteCount, blackCount, current} = model in
+    let {board, pieces, whiteCount, blackCount, current} = model.state in
     div []
         [
           h1 [] [ text "Reversi" ],
