@@ -1,7 +1,7 @@
 module Logics.GamePlay exposing (neighbors, inBoard,
                                   allPotentialMoves, listOfSandwiches,
                                   allValidMoves, nextState,
-                                  gameFinished, winner)
+                                  gameFinished, winner, flipPlayer)
 
 import Models.Grid exposing (set)
 import Models.Board exposing (boardSpec, get, pieceEqual)
@@ -171,3 +171,10 @@ winner state =
         BlackPiece
     else
         NoPiece
+
+flipPlayer : GameState -> GameState
+flipPlayer state =
+    case state.current of
+        WhitePiece -> {state | current = BlackPiece}
+        BlackPiece -> {state | current = WhitePiece}
+        NoPiece -> Debug.crash "Impossible"
