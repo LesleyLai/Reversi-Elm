@@ -9,15 +9,21 @@ import Window
 import AnimationFrame
 import Task exposing (Task)
 import Time exposing (Time)
+import WebGL.Texture as Texture exposing (Error, Texture)
 
 import Dict
 
 type Msg
-    = Animate Time | Click (Int, Int) | Resize Window.Size
+    = Animate Time
+    | Click (Int, Int)
+    | Resize Window.Size
+    | TextureLoaded (Result Error Texture)
 
 init : ( Model, Cmd Msg )
 init =
-    ( initModel, Cmd.batch [Task.perform Resize Window.size] )
+    ( initModel, Cmd.batch [Task.perform Resize Window.size,
+                           Task.attempt TextureLoaded
+                               (Texture.load "assets/texture/board.jpg")] )
       
 subscriptions : Model -> Sub Msg
 subscriptions _ =
@@ -37,6 +43,8 @@ update msg model =
             ({ model | size = size}, Cmd.none)
         Click (x, y) ->
             (model, Cmd.none)
+        TextureLoaded textureResult ->
+            ( { model | boardTexture = Result.toMaybe textureResult }, Cmd.none )
             
             ----------------------------------------------------------------
             -- case nextState model.state model.moves (x, y) of           --

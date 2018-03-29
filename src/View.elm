@@ -14,21 +14,10 @@ import Html.Attributes exposing (width, height, style)
 
 import Math.Vector3 as Vec3 exposing (Vec3, vec3)
 import Math.Matrix4 as Mat4 exposing (Mat4)
-import WebGL exposing (Mesh, Shader)
 
-type alias Vertex =
-    { position : Vec3
-    , color : Vec3
-    }
+import Render.Board exposing (boardEntityGL)
 
-mesh : Mesh Vertex
-mesh =
-    WebGL.triangles
-        [ ( Vertex (vec3 0 0 0) (vec3 1 0 0)
-          , Vertex (vec3 1 1 0) (vec3 0 1 0)
-          , Vertex (vec3 1 -1 0) (vec3 0 0 1)
-          )
-        ]
+import WebGL
 
 view : Model -> Html.Html Msg
 view model =
@@ -49,12 +38,12 @@ view model =
         , height model.size.height
         , style [ ( "display", "block" ) ]
         ]
-    [ WebGL.entity
-          vertexShader
-          fragmentShader
-          mesh
-          { perspective = perspective, camera = camera }
-        ]
+    ( model.boardTexture
+            |> Maybe.map boardEntityGL
+            |> Maybe.withDefault []
+    )
+
+
     
     ---------------------------------------------------------------------------
     -- let headerText =                                                      --
@@ -89,39 +78,3 @@ perspective =
     Mat4.mul
     (Mat4.makePerspective 45 1 0.01 100)
     (Mat4.makeLookAt (vec3 4 4 0) (vec3 0 0 0) (vec3 0 1 0))
-
-
--- Shaders --
-type alias Uniforms =
-    { perspective : Mat4, camera: Mat4 }
-
-
-vertexShader : Shader Vertex Uniforms { vcolor : Vec3 }
-vertexShader =
-    [glsl|
-        attribute vec3 position;
-        attribute vec3 color;
-        uniform mat4 perspective;
-        uniform mat4 camera;
-        varying vec3 vcolor;
-
-        void main () {
-            gl_Position = perspective * camera * vec4(position, 1.0);
-            vcolor = color;
-        }
-
-    |]
-
-
-fragmentShader : Shader {} Uniforms { vcolor : Vec3 }
-fragmentShader =
-    [glsl|
-
-        precision mediump float;
-        varying vec3 vcolor;
-
-        void main () {
-            gl_FragColor = vec4(vcolor, 1.0);
-        }
-
-    |]

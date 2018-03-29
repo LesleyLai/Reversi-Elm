@@ -9,6 +9,7 @@ import Dict exposing (Dict)
 import Time exposing (Time)
 import Window
 
+import WebGL.Texture as Texture exposing (Texture)
 
 type alias Model = {
         state: GameState,
@@ -18,8 +19,8 @@ type alias Model = {
         -- Below is the stuff for 3d rendering
         currentTime: Time,
         size: Window.Size,
-        camera: Camera
-    }
+        camera: Camera,
+        boardTexture: Maybe Texture }
 
 initModel : Model
 initModel = {
@@ -29,6 +30,6 @@ initModel = {
     winner = NoPiece,
     currentTime = 0,
     size = Window.Size 0 0,
-    camera = initCamera
- }
+    camera = initCamera,
+    boardTexture = Nothing }
     
